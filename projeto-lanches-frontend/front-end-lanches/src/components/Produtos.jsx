@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { 
-  getProdutos
+  getProdutos, 
+  adicionarProduto, 
+  editarProduto, 
+  excluirProduto 
 } from "../services/produtos";
 
 import ModalProduto from "./ModalProduto";
@@ -77,8 +80,51 @@ const Produtos = () => {
     setProdutoSelecionado(null);  
   };  
   
+  /**  
+   * Salvar faz duas coisas dependendo do modo:  
+   * - add  -> POST  
+   * - edit -> PATCH  
+   */  
+  const salvar = async () => {  
+    try {  
+      // Monta o payload do jeito que o backend espera  
+      const payload = {  
+        nome: tituloEdit,  
+        descricao: descricaoEdit,  
+        // converte para número; se vier vazio, vira 0 (você pode validar se quiser)  
+        valor: Number(valorEdit),  
+      };  
   
+      if (modo === "add") {  
+        const ok = await adicionarProduto(payload);  
+        if (!ok) {  
+          console.log("Não foi possível adicionar o produto");  
+          return;  
+        }  
+      } else {  
+        // modo edit: precisa ter um produto selecionado  
+        if (!produtoSelecionado?.id) {  
+          console.log("Nenhum produto selecionado para editar");  
+          return;  
+        }  
   
+        const ok = await editarProduto(produtoSelecionado.id, payload);  
+        if (!ok) {  
+          console.log("Não foi possível editar o produto");  
+          return;  
+        }  
+      }  
+  
+      // Depois de adicionar/editar, recarregamos do backend (mais simples e confiável)  
+      await carregarProdutos();  
+  
+      fecharModal();  
+    } catch (e) {  
+      console.log("Erro ao salvar:", e);  
+    }  
+  };  
+ 
+
   return (
    <div className="container">  
       <h2>Produtos Dourado Lanches</h2>  
@@ -111,7 +157,7 @@ const Produtos = () => {
                   Editar  
                 </button>  
                 &nbsp;  
-                <button className="btn btn-danger">  
+                <button className="btn btn-danger" onClick={{}}>  
                   Excluir  
                 </button>  
               </td>  
