@@ -11,12 +11,15 @@ function Cadastro() {
     const [email, setEmail] = useState('')
     const [senha, setSenha] = useState('')
     const [cpf, setCpf] = useState('')
+    const [tipo, setTipo] = useState(0)
+    const [documento, setDocumento] = useState(0)
 
     function cleanInputs() {
         setNome('')
         setEmail('')
         setSenha('')
-        setCpf('')
+        setCpf(''),
+        setTipo(0)
     }
 
     const handleRegister = async(e) => {
@@ -27,7 +30,8 @@ function Cadastro() {
                 nome: nome, 
                 email: email,
                 senha: senha,
-                cpf: cpf
+                cpf: cpf,
+                tipo: tipo
             })
             toast.success("Usuario cadastrado!")
             cleanInputs()
@@ -50,17 +54,43 @@ function Cadastro() {
                 <label htmlFor="password">Senha:</label>
                 <input type="password" id="senha" value={senha} onChange={(e) => setSenha(e.target.value)} placeholder='Senha' /> <br></br>
 
-                <label htmlFor="password">CPF/CNPJ</label>
-                {/* <input type="text" id="cpf_cnpj" value={cpf} onChange={(e) => setCpf(e.target.value)} placeholder='CPF/CNPJ' /> <br></br> */}
 
-                <IMaskInput 
-                mask="000.000.000-00"
-                value={cpf}
-                unmask={true} // true|false|'typed'
-                onAccept={(value) => setCpf(value)}
-                placeholder=''
-                />
+               <label>Tipo (PF/PJ)</label>
 
+            <select 
+                name="tipo" 
+                id="tipo"
+                value={tipo}
+                onChange={(e) => {
+                    setTipo(e.target.value);
+                    setDocumento(""); // limpa ao trocar
+                }}
+            >
+                <option value="0">Pessoa Física</option>
+                <option value="1">Pessoa Jurídica</option>
+            </select>
+
+            <br /><br />
+
+            <label>
+                {tipo === "0" ? "CPF" : "CNPJ"}
+            </label>
+
+            <IMaskInput
+                mask={
+                    tipo === "0"
+                        ? "000.000.000-00"
+                        : "00.000.000/0000-00"
+                }
+                value={documento}
+                unmask={true}
+                onAccept={(value) => setDocumento(value)}
+                placeholder={
+                    tipo === "0"
+                        ? "Digite o CPF"
+                        : "Digite o CNPJ"
+                }
+            />
                 <button type="submit">Salvar</button>
             </form>
             <ToastContainer />
