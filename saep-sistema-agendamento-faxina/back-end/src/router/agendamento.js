@@ -1,10 +1,10 @@
 import express from 'express';
-import { createAgendamento, getAgendamentos, busca, updateAgendamento, deleteAgendamento } from '../controllers/agendamentoController.js';
+import { createAgendamento, getAgendamentos, search, updateAgendamento, deleteAgendamento } from '../controller/agendamentoController.js';
 
 const routerAgendamento = express.Router();
 
 routerAgendamento.get('/', getAgendamentos);
-routerAgendamento.get('/busca', busca);
+routerAgendamento.get('/search', search);
 routerAgendamento.post('/', createAgendamento);
 routerAgendamento.put('/:id', updateAgendamento);
 routerAgendamento.delete('/:id', deleteAgendamento);

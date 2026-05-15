@@ -1,7 +1,7 @@
 import db from "../config/db.js";
 import bcrypt from 'bcrypt';
 
-const getUsuarios = async (req, res) => {
+export const getUsuarios = async (req, res) => {
     try{
         const {nome, email, telefone, tipo} = req.body;
         const [query] = db.query("SELECT * FROM usuario WHERE ativo = 1");
@@ -17,7 +17,7 @@ const getUsuarios = async (req, res) => {
     }
 }
 
-const busca = async (req, res) => {
+export const search = async (req, res) => {
     try {
         const {nome, email} = req.query;
         const [query] = db.query("SELECT * FROM usuario WHERE nome LIKE ? AND email LIKE ?", [`%${nome}%`, `%${email}%`]);
@@ -32,7 +32,7 @@ const busca = async (req, res) => {
     }
 }
 
-const createUsuario = async (req, res) => {
+export const createUsuario = async (req, res) => {
     try {
         const {nome, email, telefone, tipo, senha} = req.body;
         
@@ -54,18 +54,11 @@ const createUsuario = async (req, res) => {
     }
 }
 
-const updateUsuario = async (req, res) => {
+export const updateUsuario = async (req, res) => {
         try {} catch (error) {
             res.status(500).json({error: error.message});
         }
 }
 
-const deleteUsuario = async (req, res) => {}
+export const deleteUsuario = async (req, res) => {}
 
-export default {
-    getUsuarios,
-    busca,
-    createUsuario,
-    updateUsuario,
-    deleteUsuario
-}
