@@ -1,0 +1,75 @@
+https://www.prisma.io/docs/prisma-orm/quickstart/mysql
+
+1- INSTALA O TYPESCRIPT
+
+npm install typescript tsx @types/node --save-dev
+
+#################################################
+2- INSTALAR O ARQUIVO DE CONFIGURAÇÃO DO TYPESCRIPT
+
+npx tsc --init
+#################################################
+
+3- INSTALA OS PACOTES NECESSARIOS PARA INICIAR
+
+npm install prisma @types/node --save-dev
+npm install @prisma/client @prisma/adapter-mariadb dotenv
+#################################################
+
+4- EXPLICAÇÃO
+
+prisma - A CLI do Prisma para executar comandos como prisma init, prisma migrate, eprisma generate
+@prisma/client - A biblioteca Prisma Client para consultar seu banco de dados
+@prisma/adapter-mariadb - O adaptador de driver MySQL/MariaDB que conecta o Prisma Client ao seu banco de dados.
+dotenv - Carrega variáveis ​​de ambiente do seu .env arquivo
+#################################################
+
+5- ATUALIZAR O tsconfig.json
+
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "target": "ES2023",
+    "strict": true,
+    "esModuleInterop": true,
+    "ignoreDeprecations": "6.0"
+  }
+}
+#################################################
+
+6- ATUALIZAR O PACKGE.JSON 
+
+{
+  "type": "module"
+}
+
+#################################################
+
+7- INICIALIZAR O Prisma
+
+npx prisma
+
+8- CONFIGURAR O PROJETO
+
+npx prisma init --datasource-provider mysql --output ../generated/prisma
+
+O comando acima "npx prisma init --datasource-provider mysql --output ../generated/prisma" realiza as seguintes atividades:
+
+Este comando realiza algumas tarefas:
+
+- Cria um prisma/diretório com um schema.prismaarquivo contendo sua conexão de banco de dados e modelos de esquema.
+- Cria um .envarquivo no diretório raiz para variáveis ​​de ambiente.
+- Cria um prisma.config.tsarquivo para configuração do Prisma.
+
+Com os comandos do item 7 e 8 verifique se foi criado os arquivos:
+
+schema.prisma
+.env
+prisma.config.ts
+
+#################################################
+
+se alterar uma tabela no banco de dados, é necessário atualizar o schema.prisma e rodar o comando npx prisma generate
+
+Isso atualiza o cliente do Prisma para reconhecer o campo senha. Não precisa de migration porque o campo já existe no banco.
